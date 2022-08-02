@@ -30,6 +30,9 @@ namespace PandaDoc
             JsonFormatter = new JsonMediaTypeFormatter();
         }
 
+        public PandaDocHttpClient(string apiKey, PandaDocHttpClientSettings settings = null) : this(settings)
+            => ApiKey = apiKey;
+
         public void Dispose()
         {
             httpClient.Dispose();
