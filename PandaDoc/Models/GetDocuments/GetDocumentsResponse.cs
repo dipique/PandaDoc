@@ -1,6 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 
+using PandaDoc.Models.GetDocument;
+
 namespace PandaDoc.Models.GetDocuments
 {
     public class GetDocumentsResponse
@@ -159,7 +161,7 @@ namespace PandaDoc.Models.GetDocuments
         public DateTime DateModified { get; set; }
 
         [JsonProperty("status")]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [JsonProperty("removed")]
         public bool Removed { get; set; }
@@ -172,5 +174,7 @@ namespace PandaDoc.Models.GetDocuments
 
         [JsonProperty("uuid")]
         public string Uuid { get; set; }
+
+        public DocumentStatus? DocumentStatus => Status?.AsDocumentStatus();
     }
 }

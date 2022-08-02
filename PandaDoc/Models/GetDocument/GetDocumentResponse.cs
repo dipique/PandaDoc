@@ -10,6 +10,17 @@ namespace PandaDoc.Models.GetDocument
         Draft,
         Sent,
         Completed,
+        Viewed,
+    }
+
+    public static class DocumentStatusExtensions
+    {
+        public static DocumentStatus AsDocumentStatus(this string Status) => Enum.TryParse<DocumentStatus>(
+            Status.Split('.')
+                  .Select(s => $"{s[0]}".ToUpper() + s.Substring(1))
+                  .Last()
+            , out var status
+        ) ? status : throw new ArgumentOutOfRangeException($"Status '{Status}' not recognized as a valid DocumentStatus");
     }
 
     public class GetDocumentResponse
@@ -37,12 +48,7 @@ namespace PandaDoc.Models.GetDocument
         [JsonProperty("date_modified")]
         public DateTime DateModified { get; set; }
 
-        public DocumentStatus DocumentStatus => Enum.TryParse<DocumentStatus>(
-            Status.Split('.')
-                  .Select(s => $"{s[0]}".ToUpper() + s.Substring(1))
-                  .Last()
-            , out var status
-        ) ? status : throw new ArgumentOutOfRangeException($"Status was '{Status}'. This is a bug and a new DocumentStatus should be added");
+        public DocumentStatus DocumentStatus => Status.AsDocumentStatus();
     }
 
     public class Recipient
