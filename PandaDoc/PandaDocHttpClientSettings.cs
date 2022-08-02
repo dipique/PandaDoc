@@ -24,8 +24,7 @@ namespace PandaDoc
             get { return clientId; }
             private set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                clientId = value;
+                clientId = value ?? string.Empty;
             }
         }
 
@@ -34,8 +33,7 @@ namespace PandaDoc
             get { return clientSecret; }
             private set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                clientSecret = value;
+                clientSecret = value ?? string.Empty;
             }
         }
 
@@ -44,8 +42,7 @@ namespace PandaDoc
             get { return apiUri; }
             private set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                apiUri = value;
+                apiUri = value ?? new Uri("https://api.pandadoc.com");
             }
         }
 
@@ -54,8 +51,7 @@ namespace PandaDoc
             get { return authUri; }
             private set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                authUri = value;
+                authUri = value ?? new Uri("https://api.pandadoc.com");
             }
         }
     }

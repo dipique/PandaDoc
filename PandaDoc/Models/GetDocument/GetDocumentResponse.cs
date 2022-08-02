@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace PandaDoc.Models.GetDocument
@@ -36,29 +37,12 @@ namespace PandaDoc.Models.GetDocument
         [JsonProperty("date_modified")]
         public DateTime DateModified { get; set; }
 
-        public DocumentStatus DocumentStatus
-        {
-            get
-            {
-                switch (Status)
-                {
-                    case "document.uploaded":
-                        return DocumentStatus.Uploaded;
-
-                    case "document.draft":
-                        return DocumentStatus.Draft;
-
-                    case "document.sent":
-                        return DocumentStatus.Sent;
-
-                    case "document.completed":
-                        return DocumentStatus.Completed;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(string.Format("Status was '{0}'. This is a bug and a new DocumentStatus should be added", Status));
-                }
-            }
-        }
+        public DocumentStatus DocumentStatus => Enum.TryParse<DocumentStatus>(
+            Status.Split('.')
+                  .Select(s => $"{s[0]}".ToUpper() + s.Substring(1))
+                  .Last()
+            , out var status
+        ) ? status : throw new ArgumentOutOfRangeException($"Status was '{Status}'. This is a bug and a new DocumentStatus should be added");
     }
 
     public class Recipient

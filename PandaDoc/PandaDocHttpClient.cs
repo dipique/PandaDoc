@@ -16,13 +16,14 @@ namespace PandaDoc
         private HttpClient httpClient;
         private JsonMediaTypeFormatter jsonFormatter;
         private PandaDocBearerToken bearerToken;
+        private string apiKey;
 
         public PandaDocHttpClient()
             : this(new PandaDocHttpClientSettings())
         {
         }
 
-        public PandaDocHttpClient(PandaDocHttpClientSettings settings)
+        public PandaDocHttpClient(PandaDocHttpClientSettings settings = null)
         {
             Settings = settings;
             HttpClient = new HttpClient();
@@ -36,12 +37,8 @@ namespace PandaDoc
 
         public PandaDocHttpClientSettings Settings
         {
-            get { return settings; }
-            set
-            {
-                if (value == null) throw new ArgumentNullException("value");
-                settings = value;
-            }
+            get => settings;
+            set => settings = value ?? new PandaDocHttpClientSettings();
         }
 
         public HttpClient HttpClient
@@ -49,8 +46,7 @@ namespace PandaDoc
             get { return httpClient; }
             set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                httpClient = value;
+                httpClient = value ?? throw new ArgumentNullException("value");
             }
         }
 
@@ -59,8 +55,19 @@ namespace PandaDoc
             get { return jsonFormatter; }
             set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                jsonFormatter = value;
+                jsonFormatter = value ?? throw new ArgumentNullException("value");
+            }
+        }
+
+        public string ApiKey
+        {
+            get { return apiKey; }
+            set
+            {
+                apiKey = value ?? throw new ArgumentNullException("value");
+
+                httpClient.DefaultRequestHeaders.Clear();
+                httpClient.DefaultRequestHeaders.Add("Authorization", "API-Key " + value);
             }
         }
 
@@ -69,18 +76,15 @@ namespace PandaDoc
             get { return bearerToken; }
             set
             {
-                if (value == null) throw new ArgumentNullException("value");
-                bearerToken = value;
+                bearerToken = value ?? throw new ArgumentNullException("value");
 
                 httpClient.DefaultRequestHeaders.Clear();
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + bearerToken.AccessToken);
             }
         }
 
-        public void SetBearerToken(PandaDocBearerToken value)
-        {
-            BearerToken = value;
-        }
+        public void SetBearerToken(PandaDocBearerToken value) => BearerToken = value;
+        public void SetApiKey(string apiKey) => ApiKey = apiKey;
 
         public async Task<PandaDocHttpResponse<PandaDocBearerToken>> Login(string username, string password)
         {
