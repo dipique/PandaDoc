@@ -47,11 +47,11 @@
     <Compile Include="Models\Webhooks\Notification.cs" />
     <Compile Include="Models\Webhooks\Document.cs" />
     <Compile Include="Models\Webhooks\Recipient.cs" />
-    <Compile Include="PandaDocBearerToken.cs" />
-    <Compile Include="PandaDocHttpResponseExtensions.cs" />
-    <Compile Include="PandaDocHttpClient.cs" />
-    <Compile Include="PandaDocHttpClientSettings.cs" />
-    <Compile Include="PandaDocHttpResponse.cs" />
+    <Compile Include="Http\PandaDocBearerToken.cs" />
+    <Compile Include="Http\PandaDocHttpResponseExtensions.cs" />
+    <Compile Include="Http\PandaDocHttpClient.cs" />
+    <Compile Include="Http\PandaDocHttpClientSettings.cs" />
+    <Compile Include="Http\PandaDocHttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
