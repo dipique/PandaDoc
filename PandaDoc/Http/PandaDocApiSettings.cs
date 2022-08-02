@@ -3,9 +3,9 @@ using System.Configuration;
 
 namespace PandaDoc
 {
-    public class PandaDocHttpClientSettings
+    public class PandaDocApiSettings
     {
-        public PandaDocHttpClientSettings(string clientId = null, string clientSecret = null, Uri apiUrl = null, Uri authUri = null)
+        public PandaDocApiSettings(string clientId = null, string clientSecret = null, Uri apiUrl = null, Uri authUri = null)
         {
             AuthUri = authUri ?? new Uri("https://app.pandadoc.com");
             ApiUri = apiUrl ?? new Uri("https://api.pandadoc.com");

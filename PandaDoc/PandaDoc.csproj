@@ -48,10 +48,10 @@
     <Compile Include="Models\Webhooks\Document.cs" />
     <Compile Include="Models\Webhooks\Recipient.cs" />
     <Compile Include="Http\PandaDocBearerToken.cs" />
-    <Compile Include="Http\PandaDocHttpResponseExtensions.cs" />
-    <Compile Include="Http\PandaDocHttpClient.cs" />
-    <Compile Include="Http\PandaDocHttpClientSettings.cs" />
-    <Compile Include="Http\PandaDocHttpResponse.cs" />
+    <Compile Include="Http\PandaDocResponseExtensions.cs" />
+    <Compile Include="Http\PandaDocApi.cs" />
+    <Compile Include="Http\PandaDocApiSettings.cs" />
+    <Compile Include="Http\PandaDocResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

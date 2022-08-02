@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace PandaDoc
 {
-    public static class PandaDocHttpResponseExtensions
+    public static class PandaDocResponseExtensions
     {
-        public static async Task<PandaDocHttpResponse> ToPandaDocResponseAsync(this HttpResponseMessage httpResponse)
+        public static async Task<PandaDocResponse> ToPandaDocResponseAsync(this HttpResponseMessage httpResponse)
             => await httpResponse.ToPandaDocResponseAsync<string>();
 
         public static async Task<PandaDocHttpResponse<T>> ToPandaDocResponseAsync<T>(this HttpResponseMessage httpResponse)
@@ -35,7 +35,7 @@ namespace PandaDoc
             return response;
         }
 
-        private static void ExtractErrors(string responseContent, PandaDocHttpResponse response)
+        private static void ExtractErrors(string responseContent, PandaDocResponse response)
         {
             var data = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(responseContent);
 

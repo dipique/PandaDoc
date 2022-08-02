@@ -10,27 +10,27 @@ using PandaDoc.Models.SendDocument;
 
 namespace PandaDoc
 {
-    public class PandaDocHttpClient : IDisposable
+    public class PandaDocApi : IDisposable
     {
-        private PandaDocHttpClientSettings settings;
+        private PandaDocApiSettings settings;
         private HttpClient httpClient;
         private JsonMediaTypeFormatter jsonFormatter;
         private PandaDocBearerToken bearerToken;
         private string apiKey;
 
-        public PandaDocHttpClient()
-            : this(new PandaDocHttpClientSettings())
+        public PandaDocApi()
+            : this(new PandaDocApiSettings())
         {
         }
 
-        public PandaDocHttpClient(PandaDocHttpClientSettings settings = null)
+        public PandaDocApi(PandaDocApiSettings settings = null)
         {
             Settings = settings;
             HttpClient = new HttpClient();
             JsonFormatter = new JsonMediaTypeFormatter();
         }
 
-        public PandaDocHttpClient(string apiKey, PandaDocHttpClientSettings settings = null) : this(settings)
+        public PandaDocApi(string apiKey, PandaDocApiSettings settings = null) : this(settings)
             => ApiKey = apiKey;
 
         public void Dispose()
@@ -38,10 +38,10 @@ namespace PandaDoc
             httpClient.Dispose();
         }
 
-        public PandaDocHttpClientSettings Settings
+        public PandaDocApiSettings Settings
         {
             get => settings;
-            set => settings = value ?? new PandaDocHttpClientSettings();
+            set => settings = value ?? new PandaDocApiSettings();
         }
 
         public HttpClient HttpClient
@@ -142,7 +142,7 @@ namespace PandaDoc
             return response;
         }
 
-        public async Task<PandaDocHttpResponse> DeleteDocument(string uuid)
+        public async Task<PandaDocResponse> DeleteDocument(string uuid)
         {
             var httpResponse = await httpClient.DeleteAsync(settings.ApiUri + "public/v1/documents/" + uuid);
             var response = await httpResponse.ToPandaDocResponseAsync();
