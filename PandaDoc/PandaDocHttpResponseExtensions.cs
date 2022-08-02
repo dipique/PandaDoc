@@ -9,28 +9,7 @@ namespace PandaDoc
     public static class PandaDocHttpResponseExtensions
     {
         public static async Task<PandaDocHttpResponse> ToPandaDocResponseAsync(this HttpResponseMessage httpResponse)
-        {
-            if (httpResponse == null) throw new ArgumentNullException("httpResponse");
-
-            var responseContent = await httpResponse.Content.ReadAsStringAsync();
-
-            var response = new PandaDocHttpResponse
-            {
-                Content = responseContent,
-                IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
-                StatusCode = httpResponse.StatusCode,
-                Headers = httpResponse.Headers,
-                HttpResponse = httpResponse,
-                Errors = new Dictionary<string, string>()
-            };
-
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                ExtractErrors(responseContent, response);
-            }
-
-            return response;
-        }
+            => await httpResponse.ToPandaDocResponseAsync<string>();
 
         public static async Task<PandaDocHttpResponse<T>> ToPandaDocResponseAsync<T>(this HttpResponseMessage httpResponse)
         {
@@ -49,13 +28,9 @@ namespace PandaDoc
             };
 
             if (httpResponse.IsSuccessStatusCode)
-            {
                 response.Value = await httpResponse.Content.ReadAsAsync<T>();
-            }
             else
-            {
                 ExtractErrors(responseContent, response);
-            }
 
             return response;
         }
@@ -64,21 +39,21 @@ namespace PandaDoc
         {
             var data = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(responseContent);
 
-            if (data.ContainsKey("type"))
+            if (!data.ContainsKey("type"))
+                return;
+
+            var errorType = data["type"].ToString();
+
+            if (data.ContainsKey("details"))
             {
-                var errorType = data["type"].ToString();
+                var errorDetails = data["details"].ToString();
+                response.Errors.Add(errorType, errorDetails);    
+            }
 
-                if (data.ContainsKey("details"))
-                {
-                    var errorDetails = data["details"].ToString();
-                    response.Errors.Add(errorType, errorDetails);    
-                }
-
-                if (data.ContainsKey("detail"))
-                {
-                    var detail = data["detail"].ToString();
-                    response.Errors.Add(errorType, detail);
-                }
+            if (data.ContainsKey("detail"))
+            {
+                var detail = data["detail"].ToString();
+                response.Errors.Add(errorType, detail);
             }
         }
     }
